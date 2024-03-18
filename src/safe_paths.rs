@@ -6,6 +6,7 @@ use crate::flow::build_cycles;
 use crate::flow::initialize_weight_of_neighbors_from;
 use crate::cycle::find_longest_subwalk;
 use crate::uniqueness::unique_sequences;
+use crate::recursion::recursion;
 use crate::memory_meter::MemoryMeter;
 use log::info;
 
@@ -16,7 +17,7 @@ pub fn safe_paths(path: &str, k: usize, mut meter: Option<&mut MemoryMeter>) -> 
     
 
     // Read the data and build the graph
-    let (edgelist, n_nodes, string_sequences) = build_graph(path);
+    let (edgelist, n_nodes, string_sequences, edges) = build_graph(path);
 
     
 
@@ -30,23 +31,20 @@ pub fn safe_paths(path: &str, k: usize, mut meter: Option<&mut MemoryMeter>) -> 
     //---------------------------------------------------------------------------
 
     // Build a data structure containing all the cycles in the dbg
-    let cycles = build_cycles(edgelist.clone(), n_nodes, &edgelist);
+    // let cycles = build_cycles(edgelist.clone(), n_nodes, &edgelist);
 
-    info!("Cycles separated successfully.");
-    if let Some(ref mut meter) = meter {
-        meter.report();
-    }
 
     // Count the number of edges in all cycles in total
-    let mut n_edges = 0;
+    /* let mut n_edges = 0;
     for cycle in &cycles {
         n_edges += cycle.len();
-    }
+    }*/
+    let n_edges = 0;
 
     info!("Cycles contain a total of {} edges", n_edges);
 
     // Check whether the graph contains separated components that are cycles.
-    let limit: usize = 1;
+    /*let limit: usize = 1;
     'outside_loop: for cycle in &cycles {
         for edge in cycle {
             if edgelist[edge.start_node].keys().len() > limit {continue 'outside_loop;}
@@ -58,7 +56,7 @@ pub fn safe_paths(path: &str, k: usize, mut meter: Option<&mut MemoryMeter>) -> 
     info!("Cycle components checked successfully.");
     if let Some(ref mut meter) = meter {
         meter.report();
-    }
+    }*/
 
     
     // Print the results
@@ -75,10 +73,10 @@ pub fn safe_paths(path: &str, k: usize, mut meter: Option<&mut MemoryMeter>) -> 
     // The extra weight left corresponding to each path
     let mut extra_weight_of_paths = Vec::new();
     // The weight of neighbors of each node for edges leaving from that node
-    let weight_of_neighbors_of_each_node = initialize_weight_of_neighbors_from(&edgelist);
+    let weight_of_neighbors_of_each_node: Vec<i64> = initialize_weight_of_neighbors_from(&edgelist);
 
     // Perform the algorithm on each cycle
-    for cycle in cycles {
+    /*for cycle in cycles {
 
         // Initializing the vector for calculating paths in one cycle
         let mut one_cycle: VecDeque<Edge> = VecDeque::new();
@@ -110,6 +108,20 @@ pub fn safe_paths(path: &str, k: usize, mut meter: Option<&mut MemoryMeter>) -> 
             
             } 
         }
+    }*/
+
+// ******************************************************************************************************'
+// ******************** BUILD DATA STRUCTURE edgelist BUT WITH EDGES INSTEAD OF NODES ********************
+// ***************************************************************************************************''**
+
+    for edge in edges {
+        let first_edge = edge.clone();
+        let mut current_edge = edge.clone();
+        let first_weight = edge.weight;
+        let mut excess_flow = edge.weight;
+        let mut safe_path: VecDeque<Edge> = VecDeque::new();
+        safe_path.push_back(edge);
+        recursion(safe_path, first_edge, current_edge, first_weight, excess_flow, &weight_of_neighbors_of_each_node, &edgelist, &mut safe_edge_paths, &mut extra_weight_of_paths);
     }
 
     info!("Safe paths calculated successfully.");
