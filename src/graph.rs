@@ -58,13 +58,6 @@ fn create_graph(values: Vec<&str>, n_nodes : NodeId) -> (Vec<HashMap<EdgeId, Edg
 }
 
 
-// Check whether the flow condition holds. If not, produces an error 
-fn flow_condition(indeg: Vec<Weight>, outdeg: Vec<Weight>) {
-    for i in 0..indeg.len() {
-        assert_eq!(indeg[i], outdeg[i], "Flow condition not satisfied");
-    }
-}
-
 
 
 
@@ -86,8 +79,7 @@ pub fn build_graph(path: &str) -> (Vec<HashMap<EdgeId, Edge>>, NodeId, Vec<Strin
     // Creating data structure representing the graph 
     let (edgelist, indeg, outdeg, string_sequences, edges) = create_graph(values, n_nodes);
 
-    // Check whether the flow condition holds. If not, produces an error 
-    flow_condition(indeg, outdeg);
+ 
    
     (edgelist, n_nodes, string_sequences, edges)
 }

@@ -21,7 +21,7 @@ pub fn safe_paths(path: &str, k: usize, mut meter: Option<&mut MemoryMeter>) -> 
 
     
 
-    info!("Flow condition satisfied and data structure built successfully.");
+    info!("Data structure built successfully.");
     if let Some(ref mut meter) = meter {
         meter.report();
     }
