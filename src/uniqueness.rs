@@ -2,6 +2,7 @@
 use std::collections::HashSet;
 use crate::graph::Edgelist;
 use crate::edge::Edge;
+use crate::edge::EdgeId;
 use crate::edge::Weight;
 use std::collections::VecDeque;
 use std::cmp::max;
@@ -26,19 +27,19 @@ pub fn create_parent_structure(edgelist: &Edgelist) -> Vec<Vec<Edge>> {
 
 
 // Check if the safe path is maximal
-pub fn is_maximal(path: &VecDeque<Edge>, edgelist: &Edgelist, weight_left: Weight, parents: &[Vec<Edge>], 
-    weights_of_neighbors: &[Weight]) -> bool {
+pub fn is_maximal(path: &VecDeque<EdgeId>, edgelist: &Edgelist, weight_left: Weight, parents: &[Vec<Edge>], 
+    weights_of_neighbors: &[Weight], edges: &Vec<Edge>) -> bool {
 
-    let last_edge = path.back().unwrap();
-    let first_edge = path.get(0).unwrap();
+    let last_edge_id = path.back().unwrap();
+    let first_edge_id = path.get(0).unwrap();
 
     // Right side
-    let last_node = last_edge.end_node;
+    let last_node = edges[last_edge_id].end_node;
     let mut maximum_weight_of_a_neighbor = 0;
     let mut total_weight_of_neighbors = 0;
     for child in edgelist[last_node].values() {
         total_weight_of_neighbors += child.weight;
-        if child.id == first_edge.id {continue;}
+        if child.id == first_edge_id {continue;}
         maximum_weight_of_a_neighbor = max(maximum_weight_of_a_neighbor, child.weight);
     }
     
@@ -48,10 +49,10 @@ pub fn is_maximal(path: &VecDeque<Edge>, edgelist: &Edgelist, weight_left: Weigh
     } 
 
     // Left side
-    let first_node = first_edge.start_node;
+    let first_node = edges[first_edge_id].start_node;
     let mut maximum_weight_of_parent_edge = 0;
     for parent in &parents[first_node] {
-        if parent.id != last_edge.id {
+        if parent.id != last_edge_id {
             maximum_weight_of_parent_edge = max(maximum_weight_of_parent_edge, parent.weight);
         }
     }
@@ -96,18 +97,20 @@ fn get_smaller_between_iself_and_reverse_complement(sequence: String) -> String 
 
 
 
-pub fn unique_sequences(safe_edge_paths: Vec<VecDeque<Edge>>, k: usize, weights: &[Weight], 
-    edgelist: &Edgelist, weights_of_neighbors: Vec<Weight>, string_sequences: Vec<String>) -> HashSet<String> {
+pub fn unique_sequences(safe_edge_paths: Vec<VecDeque<EdgeId>>, k: usize, weights: &[Weight], 
+    edgelist: &Edgelist, weights_of_neighbors: Vec<Weight>, string_sequences: Vec<String>, edges: &Vec<Edge>) -> HashSet<String> {
 
     let parents = create_parent_structure(edgelist);
     let mut safe_paths = HashSet::new();
     let  mut counter = 0;
     for mut sequence in safe_edge_paths {
-        if is_maximal(&sequence, edgelist, weights[counter], &parents, &weights_of_neighbors) {
-            let first_edge = sequence.pop_front();
-            let mut string_path = (string_sequences[first_edge.unwrap().id]).to_string(); 
-            for edge in sequence {
-                string_path += &string_sequences[edge.id][k-1..]; 
+        if is_maximal(&sequence, edgelist, weights[counter], &parents, &weights_of_neighbors, edges) {
+            let first_edge_id = sequence.pop_front();
+            // let first_edge = edges[first_edge_id];
+            // let mut string_path = (string_sequences[first_edge.unwrap().id]).to_string(); 
+            let mut string_path = (string_sequences[first_edge_id]).to_string(); 
+            for edge_id in sequence {
+                string_path += &string_sequences[edge_id][k-1..]; 
             }
             safe_paths.insert(get_smaller_between_iself_and_reverse_complement((string_path).to_string()));
         }

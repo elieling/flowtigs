@@ -1,6 +1,7 @@
 use std::collections::HashSet;
 use std::collections::VecDeque;
 use crate::edge::Edge;
+use crate::edge::edge::EdgeId;
 use crate::graph::build_graph;
 use crate::flow::build_cycles;
 use crate::flow::initialize_weight_of_neighbors_from;
@@ -20,8 +21,9 @@ pub fn safe_paths(path: &str, k: usize, mut meter: Option<&mut MemoryMeter>) -> 
     let (edgelist, n_nodes, string_sequences, edges) = build_graph(path);
 
     
+    let total_edges = edges.len();
 
-    info!("Data structure built successfully.");
+    info!("Data structure built successfully. Graph contains {} nodes and {} edges.", n_nodes, total_edges);
     if let Some(ref mut meter) = meter {
         meter.report();
     }
@@ -114,14 +116,22 @@ pub fn safe_paths(path: &str, k: usize, mut meter: Option<&mut MemoryMeter>) -> 
 // ******************** BUILD DATA STRUCTURE edgelist BUT WITH EDGES INSTEAD OF NODES ********************
 // ***************************************************************************************************''**
 
+    let mut counter = 0
     for edge in edges {
+        if counter == total_edges / 2 || counter == total_edges / 4 || counter == total_edges / 10 {
+            info!("Coumputed {} / {} edges", counter, total_edges);
+            if let Some(ref mut meter) = meter {
+                meter.report();
+            }
+        }
         let first_edge = edge.clone();
         let mut current_edge = edge.clone();
         let first_weight = edge.weight;
         let mut excess_flow = edge.weight;
-        let mut safe_path: VecDeque<Edge> = VecDeque::new();
-        safe_path.push_back(edge);
+        let mut safe_path: VecDeque<EdgeId> = VecDeque::new();
+        safe_path.push_back(edge.id);
         recursion(safe_path, first_edge, current_edge, first_weight, excess_flow, &weight_of_neighbors_of_each_node, &edgelist, &mut safe_edge_paths, &mut extra_weight_of_paths);
+        counter++;
     }
 
     info!("Safe paths calculated successfully.");
@@ -130,7 +140,7 @@ pub fn safe_paths(path: &str, k: usize, mut meter: Option<&mut MemoryMeter>) -> 
     }
 
 
-    let safe_paths = unique_sequences(safe_edge_paths, k, &extra_weight_of_paths, &edgelist, weight_of_neighbors_of_each_node, string_sequences);
+    let safe_paths = unique_sequences(safe_edge_paths, k, &extra_weight_of_paths, &edgelist, weight_of_neighbors_of_each_node, string_sequences, &edges);
 
 
     info!("Safe paths made to strings successfully.");
