@@ -27,7 +27,7 @@ pub fn create_parent_structure(edgelist: &Edgelist) -> Vec<Vec<Edge>> {
 
 
 // Check if the safe path is maximal
-pub fn is_maximal(path: &VecDeque<EdgeId>, edgelist: &Edgelist, weight_left: Weight, parents: &[Vec<Edge>], 
+pub fn is_maximal(&path: VecDeque<EdgeId>, edgelist: &Edgelist, weight_left: Weight, parents: &[Vec<Edge>], 
     weights_of_neighbors: &[Weight], edges: &Vec<Edge>) -> bool {
 
     let last_edge_id = path.back().unwrap();
@@ -39,7 +39,7 @@ pub fn is_maximal(path: &VecDeque<EdgeId>, edgelist: &Edgelist, weight_left: Wei
     let mut total_weight_of_neighbors = 0;
     for child in edgelist[last_node].values() {
         total_weight_of_neighbors += child.weight;
-        if child.id == first_edge_id {continue;}
+        if child.id == *first_edge_id {continue;}
         maximum_weight_of_a_neighbor = max(maximum_weight_of_a_neighbor, child.weight);
     }
     
@@ -52,7 +52,7 @@ pub fn is_maximal(path: &VecDeque<EdgeId>, edgelist: &Edgelist, weight_left: Wei
     let first_node = edges[*first_edge_id].start_node;
     let mut maximum_weight_of_parent_edge = 0;
     for parent in &parents[first_node] {
-        if parent.id != last_edge_id {
+        if parent.id != *last_edge_id {
             maximum_weight_of_parent_edge = max(maximum_weight_of_parent_edge, parent.weight);
         }
     }
@@ -108,7 +108,7 @@ pub fn unique_sequences(safe_edge_paths: Vec<VecDeque<EdgeId>>, k: usize, weight
             let first_edge_id = sequence.pop_front();
             // let first_edge = edges[first_edge_id];
             // let mut string_path = (string_sequences[first_edge.unwrap().id]).to_string(); 
-            let mut string_path = (string_sequences[first_edge_id]).to_string(); 
+            let mut string_path = (string_sequences.get(first_edge_id)).to_string(); 
             for edge_id in sequence {
                 string_path += &string_sequences[edge_id][k-1..]; 
             }
