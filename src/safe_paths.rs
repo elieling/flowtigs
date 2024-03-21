@@ -1,11 +1,8 @@
 use std::collections::HashSet;
 use std::collections::VecDeque;
-use crate::edge::Edge;
-use crate::edge::edge::EdgeId;
+use crate::edge::EdgeId;
 use crate::graph::build_graph;
-use crate::flow::build_cycles;
 use crate::flow::initialize_weight_of_neighbors_from;
-use crate::cycle::find_longest_subwalk;
 use crate::uniqueness::unique_sequences;
 use crate::recursion::recursion;
 use crate::memory_meter::MemoryMeter;
@@ -116,7 +113,7 @@ pub fn safe_paths(path: &str, k: usize, mut meter: Option<&mut MemoryMeter>) -> 
 // ******************** BUILD DATA STRUCTURE edgelist BUT WITH EDGES INSTEAD OF NODES ********************
 // ***************************************************************************************************''**
 
-    let mut counter = 0
+    let mut counter = 0;
     for edge in edges {
         if counter == total_edges / 2 || counter == total_edges / 4 || counter == total_edges / 10 {
             info!("Coumputed {} / {} edges", counter, total_edges);
@@ -131,7 +128,7 @@ pub fn safe_paths(path: &str, k: usize, mut meter: Option<&mut MemoryMeter>) -> 
         let mut safe_path: VecDeque<EdgeId> = VecDeque::new();
         safe_path.push_back(edge.id);
         recursion(safe_path, first_edge, current_edge, first_weight, excess_flow, &weight_of_neighbors_of_each_node, &edgelist, &mut safe_edge_paths, &mut extra_weight_of_paths);
-        counter++;
+        counter += 1;
     }
 
     info!("Safe paths calculated successfully.");

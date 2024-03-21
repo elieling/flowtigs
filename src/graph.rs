@@ -5,7 +5,6 @@ use crate::edge::build_edge;
 use crate::edge::NodeId;
 use crate::edge::EdgeId;
 use crate::edge::Weight;
-use log::info;
 
 
 pub type Edgelist = Vec<HashMap<EdgeId, Edge>>;
@@ -47,7 +46,6 @@ fn create_graph(values: Vec<&str>, n_nodes : NodeId) -> (Vec<HashMap<EdgeId, Edg
         string_sequences[id] = (&values[i*4+4]).to_string();
         edgelist[node1].insert(edge.id, edge.clone());
         edges.push(edge.clone());
-        // info!("edge id {} == {} id in edge list", edge.id, id);
         id += 1;
 
         // Counting indegree and outdegree for checking flow condition

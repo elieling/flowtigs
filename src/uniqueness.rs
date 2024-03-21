@@ -34,7 +34,7 @@ pub fn is_maximal(path: &VecDeque<EdgeId>, edgelist: &Edgelist, weight_left: Wei
     let first_edge_id = path.get(0).unwrap();
 
     // Right side
-    let last_node = edges[last_edge_id].end_node;
+    let last_node = edges[*last_edge_id].end_node;
     let mut maximum_weight_of_a_neighbor = 0;
     let mut total_weight_of_neighbors = 0;
     for child in edgelist[last_node].values() {
@@ -49,7 +49,7 @@ pub fn is_maximal(path: &VecDeque<EdgeId>, edgelist: &Edgelist, weight_left: Wei
     } 
 
     // Left side
-    let first_node = edges[first_edge_id].start_node;
+    let first_node = edges[*first_edge_id].start_node;
     let mut maximum_weight_of_parent_edge = 0;
     for parent in &parents[first_node] {
         if parent.id != last_edge_id {
