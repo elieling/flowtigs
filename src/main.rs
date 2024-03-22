@@ -3,7 +3,6 @@ mod edge;
 use crate::edge::Edge;
 mod graph;
 mod flow;
-mod cycle;
 mod uniqueness;
 mod safe_paths;
 use crate::safe_paths::safe_paths;
