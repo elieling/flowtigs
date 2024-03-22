@@ -116,7 +116,7 @@ pub fn unique_sequences(safe_edge_paths: Vec<VecDeque<EdgeId>>, k: usize, weight
             };
             // let first_edge = edges[first_edge_id];
             // let mut string_path = (string_sequences[first_edge.unwrap().id]).to_string(); 
-            let mut string_path = (string_sequences.get(first_edge_id)).to_string(); 
+            let mut string_path = (string_sequences.get(first_edge_id)).expect("REASON").to_string(); 
             for edge_id in sequence {
                 string_path += &string_sequences[edge_id][k-1..]; 
             }
