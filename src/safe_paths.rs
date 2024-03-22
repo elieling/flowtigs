@@ -114,7 +114,7 @@ pub fn safe_paths(path: &str, k: usize, mut meter: Option<&mut MemoryMeter>) -> 
 // ***************************************************************************************************''**
 
     let mut counter = 0;
-    for edge in edges {
+    for edge in &edges {
         if counter == total_edges / 2 || counter == total_edges / 4 || counter == total_edges / 10 {
             info!("Coumputed {} / {} edges", counter, total_edges);
             if let Some(ref mut meter) = meter {
@@ -122,9 +122,9 @@ pub fn safe_paths(path: &str, k: usize, mut meter: Option<&mut MemoryMeter>) -> 
             }
         }
         let first_edge = edge.clone();
-        let mut current_edge = edge.clone();
+        let current_edge = edge.clone();
         let first_weight = edge.weight;
-        let mut excess_flow = edge.weight;
+        let excess_flow = edge.weight;
         let mut safe_path: VecDeque<EdgeId> = VecDeque::new();
         safe_path.push_back(edge.id);
         recursion(safe_path, first_edge, current_edge, first_weight, excess_flow, &weight_of_neighbors_of_each_node, &edgelist, &mut safe_edge_paths, &mut extra_weight_of_paths);
