@@ -85,13 +85,13 @@ pub fn safe_paths(path: &str, k: usize, mut meter: Option<&mut MemoryMeter>) -> 
             let current_edge_id = safe_path.back().expect("Empty safe path");
 
             // If a cycle has no leakage, stop running
-            if edge.id == current_edge_id && edge.weight == excess_flow {
+            if edge.id == *current_edge_id && edge.weight == excess_flow {
                 safe_edge_paths.push(safe_path);
                 extra_weight_of_paths.push(excess_flow);
                 continue;
             }
 
-            let current_edge = edges[current_edge_id];
+            let current_edge = edges[*current_edge_id];
 
             // Verify whether the walk can be continued
             let mut can_continue = false;
