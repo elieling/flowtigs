@@ -1,10 +1,11 @@
 use std::collections::HashSet;
 use std::collections::VecDeque;
 use crate::edge::EdgeId;
+use crate::edge::Weight;
 use crate::graph::build_graph;
 use crate::flow::initialize_weight_of_neighbors_from;
 use crate::uniqueness::unique_sequences;
-use crate::recursion::recursion;
+// use crate::recursion::recursion;
 use crate::memory_meter::MemoryMeter;
 use log::info;
 
@@ -44,7 +45,7 @@ pub fn safe_paths(path: &str, k: usize, mut meter: Option<&mut MemoryMeter>) -> 
     for edge in &edges {
 
         // Logging
-        if counter == (total_edges / 2) + (total_edges / 3) ||  total_edges / 2 || counter == total_edges / 4 || counter == total_edges / 10 {
+        if counter == (total_edges / 2) + (total_edges / 3) ||  counter == total_edges / 2 || counter == total_edges / 4 || counter == total_edges / 10 {
             info!("Coumputed {} / {} edges", counter, total_edges);
             if let Some(ref mut meter) = meter {
                 meter.report();
@@ -64,6 +65,7 @@ pub fn safe_paths(path: &str, k: usize, mut meter: Option<&mut MemoryMeter>) -> 
 
         // Initializing safe paths starting from edge
         safe_path.push_back(edge.id);
+        let weigth_of_all_next_edges = weight_of_neighbors_of_each_node[edge.end_node];
         for next_edge in edgelist[edge.end_node].values() {
             let weight_from_this_path = weigth_of_all_next_edges - next_edge.weight;
             if (excess_flow - weight_from_this_path) > 0 {
@@ -79,7 +81,7 @@ pub fn safe_paths(path: &str, k: usize, mut meter: Option<&mut MemoryMeter>) -> 
         // Iterating through each safe path starting with edge
         while !waiting_list.is_empty() {
 
-            let (safe_path, excess_flow) = queue.pop_back().expect("Waiting list is empty");
+            let (safe_path, excess_flow) = waiting_list.pop_back().expect("Waiting list is empty");
             let current_edge_id = safe_path.back().expect("Empty safe path");
 
             // If a cycle has no leakage, stop running
