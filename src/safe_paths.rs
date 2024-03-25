@@ -53,15 +53,9 @@ pub fn safe_paths(path: &str, k: usize, mut meter: Option<&mut MemoryMeter>) -> 
         }
 
         // Initializing variables
-        let first_edge_id = edge.id;
-        // let current_edge = edge.clone();
-        let first_weight = edge.weight;
         let excess_flow = edge.weight;
         let mut safe_path: VecDeque<EdgeId> = VecDeque::new();
-        let mut waiting_list: VecDeque<(VecDeque<EdgeId>, Weight)> = VecDeque::new(); // Path, excess flow                  // , first edge id, weight of first edge
-        // let mut waiting_paths: Vec<VecDeque<EdgeId>> = Vec::new();
-        // let empty path: VecDeque<EdgeId> = vec::new();
-        // let mut path_id = 0;
+        let mut waiting_list: VecDeque<(VecDeque<EdgeId>, Weight)> = VecDeque::new(); // Path, excess flow      
 
         // Initializing safe paths starting from edge
         safe_path.push_back(edge.id);
@@ -71,9 +65,7 @@ pub fn safe_paths(path: &str, k: usize, mut meter: Option<&mut MemoryMeter>) -> 
             if (excess_flow - weight_from_this_path) > 0 {
                 let mut updated_safe_path = safe_path.clone();
                 updated_safe_path.push_back(next_edge.id);
-                            // waiting_paths.push(updated_safe_path);
                 waiting_list.push_back((updated_safe_path, excess_flow - weight_from_this_path));
-                            // path_id += 1;
             }
         }
 
@@ -91,7 +83,7 @@ pub fn safe_paths(path: &str, k: usize, mut meter: Option<&mut MemoryMeter>) -> 
                 continue;
             }
 
-            let current_edge = edges[*current_edge_id];
+            let current_edge = edges[*current_edge_id].clone();
 
             // Verify whether the walk can be continued
             let mut can_continue = false;
@@ -118,7 +110,6 @@ pub fn safe_paths(path: &str, k: usize, mut meter: Option<&mut MemoryMeter>) -> 
                     }
                 }
             }
-            // recursion(safe_path, first_edge_id, current_edge, first_weight, excess_flow, &weight_of_neighbors_of_each_node, &edgelist, &mut safe_edge_paths, &mut extra_weight_of_paths);
             counter += 1;
         }
     }
