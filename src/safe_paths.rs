@@ -46,6 +46,9 @@ pub fn safe_paths(path: &str, k: usize, mut meter: Option<&mut MemoryMeter>) -> 
     let mut greatest_flow = 0;
     let mut longest_while = 0;
     let mut print_when_ends = false;
+    // Keep track of visited edges while leakage is 0 to avoid infinite loops
+    let mut visited_edges: HashSet<EdgeId> = HashSet::new(); 
+
     // Find all safe paths that start on a specific edge. Repeat for all edges
     for edge in &edges {
 
@@ -91,10 +94,17 @@ pub fn safe_paths(path: &str, k: usize, mut meter: Option<&mut MemoryMeter>) -> 
             let current_edge_id = safe_path.back().expect("Empty safe path");
 
             // If a cycle has no leakage, stop running
-            if edge.id == *current_edge_id && edge.weight == excess_flow {
-                safe_edge_paths.push(safe_path);
-                extra_weight_of_paths.push(excess_flow);
-                continue;
+            if edge.weight == excess_flow {
+                if visited_edges.contains(current_edge_id) {
+                    safe_edge_paths.push(safe_path);
+                    extra_weight_of_paths.push(excess_flow);
+                    continue;
+                } else {
+                    visited_edges.insert(current_edge_id.clone());
+                }
+            } else {
+                // We do not need to keep track if the leakage is greater than 0
+                visited_edges = HashSet::new(); 
             }
 
             let current_edge = edges[*current_edge_id].clone();

@@ -1,6 +1,5 @@
 use std::fs::File;
 mod edge;
-use crate::edge::Edge;
 mod graph;
 mod flow;
 mod uniqueness;
