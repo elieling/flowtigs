@@ -43,12 +43,15 @@ pub fn safe_paths(path: &str, k: usize, mut meter: Option<&mut MemoryMeter>) -> 
 
     // counter only for logging purposes
     let mut counter = 0;
+    let mut greatest_flow = 0;
+    let mut longest_while = 0;
+    let mut print_when_ends = false;
     // Find all safe paths that start on a specific edge. Repeat for all edges
     for edge in &edges {
 
         // Logging
         if counter == (total_edges / 2) + (total_edges / 3) ||  counter == total_edges / 2 || counter == total_edges / 4 || counter == total_edges / 10 {
-            info!("Coumputed {} / {} edges", counter, total_edges);
+            info!("- Coumputed {} / {} edges", counter, total_edges);
             if let Some(ref mut meter) = meter {
                 meter.report();
             }
@@ -56,6 +59,14 @@ pub fn safe_paths(path: &str, k: usize, mut meter: Option<&mut MemoryMeter>) -> 
 
         // Initializing variables
         let excess_flow = edge.weight;
+        if excess_flow > greatest_flow {
+            greatest_flow = excess_flow;
+            info!("New greatest flow: {}. Coumputed {} / {} edges", greatest_flow, counter, total_edges);
+            if let Some(ref mut meter) = meter {
+                meter.report();
+            }
+            print_when_ends = true;
+        }
         let mut safe_path: VecDeque<EdgeId> = VecDeque::new();
         let mut waiting_list: VecDeque<(VecDeque<EdgeId>, Weight)> = VecDeque::new(); // Path, excess flow      
 
@@ -72,6 +83,7 @@ pub fn safe_paths(path: &str, k: usize, mut meter: Option<&mut MemoryMeter>) -> 
         }
 
 
+        let mut length_of_while = 0;
         // Iterating through each safe path starting with edge
         while !waiting_list.is_empty() {
 
@@ -111,6 +123,21 @@ pub fn safe_paths(path: &str, k: usize, mut meter: Option<&mut MemoryMeter>) -> 
                         waiting_list.push_back((updated_safe_path, excess_flow - weight_from_this_path));
                     }
                 }
+            }
+            length_of_while += 1;
+        }
+        if length_of_while > longest_while {
+            longest_while = length_of_while;
+            info!("New longest while: {}. Coumputed {} / {} edges", longest_while, counter, total_edges);
+            if let Some(ref mut meter) = meter {
+                meter.report();
+            }
+        }
+        if print_when_ends {
+            print_when_ends = false;
+            info!("ENDED. Coumputed {} / {} edges", counter, total_edges);
+            if let Some(ref mut meter) = meter {
+                meter.report();
             }
         }
         counter += 1;
