@@ -51,7 +51,7 @@ pub fn safe_paths(path: &str, k: usize, mut meter: Option<&mut MemoryMeter>) -> 
 
         // Logging
         if counter == (total_edges / 2) + (total_edges / 3) ||  counter == total_edges / 2 || counter == total_edges / 4 || counter == total_edges / 10 {
-            info!("- Coumputed {} / {} edges", counter, total_edges);
+            info!("----- Coumputed {} / {} edges", counter, total_edges);
             if let Some(ref mut meter) = meter {
                 meter.report();
             }
@@ -125,6 +125,12 @@ pub fn safe_paths(path: &str, k: usize, mut meter: Option<&mut MemoryMeter>) -> 
                 }
             }
             length_of_while += 1;
+            if length_of_while == 2 * longest_while || length_of_while == 5 * longest_while || length_of_while == 10 * longest_while || length_of_while == 25 * longest_while || length_of_while == 50 * longest_while || length_of_while == 100 * longest_while {
+                info!("##### LONG WHILE: {}. Flow value of first edge: {}. Computed {} / {} edges", length_of_while, edge.weight, counter, total_edges);
+                if let Some(ref mut meter) = meter {
+                    meter.report();
+                }
+            }
         }
         if length_of_while > longest_while {
             longest_while = length_of_while;
