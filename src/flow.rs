@@ -16,16 +16,3 @@ pub fn initialize_weight_of_neighbors_from(edgelist: &Edgelist) -> Vec<Weight> {
 
     weights_of_neighbors
 }
-
-
-// Put all the nodes in the queue
-fn build_queue(n_nodes: NodeId) -> VecDeque<NodeId> {
-    let mut queue = VecDeque::new(); 
-    for i in 0..n_nodes {
-        queue.push_back(i);
-    }
-    queue
-}
-
-
-
