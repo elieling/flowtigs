@@ -41,7 +41,9 @@ pub fn safe_paths(path: &str, k: usize, mut meter: Option<&mut MemoryMeter>) -> 
     let weight_of_neighbors_of_each_node: Vec<i64> = initialize_weight_of_neighbors_from(&edgelist);
 
 
+    // counter only for logging purposes
     let mut counter = 0;
+    // Find all safe paths that start on a specific edge. Repeat for all edges
     for edge in &edges {
 
         // Logging
@@ -57,7 +59,7 @@ pub fn safe_paths(path: &str, k: usize, mut meter: Option<&mut MemoryMeter>) -> 
         let mut safe_path: VecDeque<EdgeId> = VecDeque::new();
         let mut waiting_list: VecDeque<(VecDeque<EdgeId>, Weight)> = VecDeque::new(); // Path, excess flow      
 
-        // Initializing safe paths starting from edge
+        // Initializing safe paths starting from edge, as well as thewaiting list for upcoming while loop
         safe_path.push_back(edge.id);
         let weigth_of_all_next_edges = weight_of_neighbors_of_each_node[edge.end_node];
         for next_edge in edgelist[edge.end_node].values() {
@@ -110,8 +112,8 @@ pub fn safe_paths(path: &str, k: usize, mut meter: Option<&mut MemoryMeter>) -> 
                     }
                 }
             }
-            counter += 1;
         }
+        counter += 1;
     }
 
     info!("Safe paths calculated successfully.");
