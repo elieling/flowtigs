@@ -127,6 +127,7 @@ pub fn safe_paths(path: &str, k: usize, mut meter: Option<&mut MemoryMeter>) -> 
             length_of_while += 1;
             if length_of_while == 2 * longest_while || length_of_while == 5 * longest_while || length_of_while == 10 * longest_while || length_of_while == 25 * longest_while || length_of_while == 50 * longest_while || length_of_while == 100 * longest_while {
                 info!("##### LONG WHILE: {}. Flow value of first edge: {}. Computed {} / {} edges", length_of_while, edge.weight, counter, total_edges);
+                info!("##### First edge id: {}, latest edge id: {}, excess flow: {}", edge.id, current_edge_id, excess_flow);
                 if let Some(ref mut meter) = meter {
                     meter.report();
                 }
