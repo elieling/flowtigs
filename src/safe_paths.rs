@@ -48,6 +48,8 @@ pub fn safe_paths(path: &str, k: usize, mut meter: Option<&mut MemoryMeter>) -> 
     let mut print_when_ends = false;
     // Keep track of visited edges while leakage is 0 to avoid infinite loops
     let mut visited_edges: HashSet<EdgeId> = HashSet::new(); 
+    // threshold for keeping safe path
+    let threshold = cli.threshold;
 
     // Find all safe paths that start on a specific edge. Repeat for all edges
     for edge in &edges {
@@ -78,7 +80,7 @@ pub fn safe_paths(path: &str, k: usize, mut meter: Option<&mut MemoryMeter>) -> 
         let weigth_of_all_next_edges = weight_of_neighbors_of_each_node[edge.end_node];
         for next_edge in edgelist[edge.end_node].values() {
             let weight_from_this_path = weigth_of_all_next_edges - next_edge.weight;
-            if (excess_flow - weight_from_this_path) > 0 {
+            if (excess_flow - weight_from_this_path) > threshold {
                 let mut updated_safe_path = safe_path.clone();
                 updated_safe_path.push_back(next_edge.id);
                 waiting_list.push_back((updated_safe_path, excess_flow - weight_from_this_path));
@@ -98,6 +100,7 @@ pub fn safe_paths(path: &str, k: usize, mut meter: Option<&mut MemoryMeter>) -> 
                 if visited_edges.contains(current_edge_id) {
                     safe_edge_paths.push(safe_path);
                     extra_weight_of_paths.push(excess_flow);
+                    visited_edges = HashSet::new(); 
                     continue;
                 } else {
                     visited_edges.insert(current_edge_id.clone());
@@ -114,7 +117,7 @@ pub fn safe_paths(path: &str, k: usize, mut meter: Option<&mut MemoryMeter>) -> 
             let weigth_of_all_next_edges = weight_of_neighbors_of_each_node[current_edge.end_node];
             for next_edge in edgelist[current_edge.end_node].values() {
                 let weight_from_this_path = weigth_of_all_next_edges - next_edge.weight;
-                if (excess_flow - weight_from_this_path) > 0 {
+                if (excess_flow - weight_from_this_path) > threshold {
                     can_continue = true;
                 }
             }
@@ -127,7 +130,7 @@ pub fn safe_paths(path: &str, k: usize, mut meter: Option<&mut MemoryMeter>) -> 
                 // Extend safe path while keeping positive excess flow
                 for next_edge in edgelist[current_edge.end_node].values() {
                     let weight_from_this_path = weigth_of_all_next_edges - next_edge.weight;
-                    if (excess_flow - weight_from_this_path) > 0 {
+                    if (excess_flow - weight_from_this_path) > threshold {
                         let mut updated_safe_path = safe_path.clone();
                         updated_safe_path.push_back(next_edge.id);
                         waiting_list.push_back((updated_safe_path, excess_flow - weight_from_this_path));
