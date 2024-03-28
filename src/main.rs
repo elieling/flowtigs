@@ -28,6 +28,10 @@ struct Cli {
     #[clap(short)]
     k: usize,
 
+    /// The threshold for safety.
+    #[clap(short)]
+    threshold: usize,
+
     /// The output file where the arc-centric de Bruijn graph should be written to.
     #[clap(long)]
     output: PathBuf,
@@ -86,7 +90,7 @@ fn main() {
     );
     let mut output = BufWriter::new(File::create(&cli.output).unwrap());
     meter.report();
-    let safe_paths = safe_paths(&cli.input, cli.k, Some(&mut meter));
+    let safe_paths = safe_paths(&cli.input, cli.k, cli.threshold, Some(&mut meter));
 
     info!("Safe paths calculated");
     meter.report();

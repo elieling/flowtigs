@@ -10,7 +10,7 @@ use crate::memory_meter::MemoryMeter;
 use log::info;
 
 
-pub fn safe_paths(path: &str, k: usize, mut meter: Option<&mut MemoryMeter>) -> HashSet<String> {
+pub fn safe_paths(path: &str, k: usize, threshold: usize, mut meter: Option<&mut MemoryMeter>) -> HashSet<String> {
 
     
     
@@ -48,8 +48,6 @@ pub fn safe_paths(path: &str, k: usize, mut meter: Option<&mut MemoryMeter>) -> 
     let mut print_when_ends = false;
     // Keep track of visited edges while leakage is 0 to avoid infinite loops
     let mut visited_edges: HashSet<EdgeId> = HashSet::new(); 
-    // threshold for keeping safe path
-    let threshold = cli.threshold;
 
     // Find all safe paths that start on a specific edge. Repeat for all edges
     for edge in &edges {
