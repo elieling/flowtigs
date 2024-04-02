@@ -30,7 +30,7 @@ struct Cli {
 
     /// The threshold for safety.
     #[clap(short)]
-    threshold: usize,
+    threshold: i64,
 
     /// The output file where the arc-centric de Bruijn graph should be written to.
     #[clap(long)]

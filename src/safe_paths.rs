@@ -10,7 +10,7 @@ use crate::memory_meter::MemoryMeter;
 use log::info;
 
 
-pub fn safe_paths(path: &str, k: usize, threshold: usize, mut meter: Option<&mut MemoryMeter>) -> HashSet<String> {
+pub fn safe_paths(path: &str, k: usize, threshold: Weight, mut meter: Option<&mut MemoryMeter>) -> HashSet<String> {
 
     
     
