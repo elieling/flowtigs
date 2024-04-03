@@ -31,37 +31,37 @@ pub fn create_parent_structure(edgelist: &Edgelist) -> Vec<Vec<Edge>> {
 pub fn is_maximal(path: &VecDeque<EdgeId>, edgelist: &Edgelist, weight_left: Weight, parents: &[Vec<Edge>], 
     weights_of_neighbors: &[Weight], edges: &Vec<Edge>) -> bool {
 
-    let last_edge_id = path.back().unwrap();
-    let first_edge_id = path.get(0).unwrap();
+    // let last_edge_id = path.back().unwrap();
+    // let first_edge_id = path.get(0).unwrap();
 
-    // Right side
-    let last_node = edges[*last_edge_id].end_node;
-    let mut maximum_weight_of_a_neighbor = 0;
-    let mut total_weight_of_neighbors = 0;
-    for child in edgelist[last_node].values() {
-        total_weight_of_neighbors += child.weight;
-        if child.id == *first_edge_id {continue;}
-        maximum_weight_of_a_neighbor = max(maximum_weight_of_a_neighbor, child.weight);
-    }
+    // // Right side
+    // let last_node = edges[*last_edge_id].end_node;
+    // let mut maximum_weight_of_a_neighbor = 0;
+    // let mut total_weight_of_neighbors = 0;
+    // for child in edgelist[last_node].values() {
+    //     total_weight_of_neighbors += child.weight;
+    //     if child.id == *first_edge_id {continue;}
+    //     maximum_weight_of_a_neighbor = max(maximum_weight_of_a_neighbor, child.weight);
+    // }
     
-    // Check if the flow is sufficient to get a longer path. If yes, return false.
-    if weight_left > total_weight_of_neighbors - maximum_weight_of_a_neighbor {
-        return false;
-    } 
+    // // Check if the flow is sufficient to get a longer path. If yes, return false.
+    // if weight_left > total_weight_of_neighbors - maximum_weight_of_a_neighbor {
+    //     return false;
+    // } 
 
-    // Left side
-    let first_node = edges[*first_edge_id].start_node;
-    let mut maximum_weight_of_parent_edge = 0;
-    for parent in &parents[first_node] {
-        if parent.id != *last_edge_id {
-            maximum_weight_of_parent_edge = max(maximum_weight_of_parent_edge, parent.weight);
-        }
-    }
+    // // Left side
+    // let first_node = edges[*first_edge_id].start_node;
+    // let mut maximum_weight_of_parent_edge = 0;
+    // for parent in &parents[first_node] {
+    //     if parent.id != *last_edge_id {
+    //         maximum_weight_of_parent_edge = max(maximum_weight_of_parent_edge, parent.weight);
+    //     }
+    // }
 
-    // Check if the flow is sufficient to get a longer path. If yes, return false.
-    if weight_left + maximum_weight_of_parent_edge - weights_of_neighbors[first_node] > 0 {
-        return false;
-    }
+    // // Check if the flow is sufficient to get a longer path. If yes, return false.
+    // if weight_left + maximum_weight_of_parent_edge - weights_of_neighbors[first_node] > 0 {
+    //     return false;
+    // }
 
     true
 }
