@@ -29,39 +29,39 @@ pub fn create_parent_structure(edgelist: &Edgelist) -> Vec<Vec<Edge>> {
 
 // Check if the safe path is maximal
 pub fn is_maximal(path: &VecDeque<EdgeId>, edgelist: &Edgelist, weight_left: Weight, parents: &[Vec<Edge>], 
-    weights_of_neighbors: &[Weight], edges: &Vec<Edge>) -> bool {
+    weights_of_neighbors: &[Weight], edges: &Vec<Edge>, threshold: Weight) -> bool {
 
-    // let last_edge_id = path.back().unwrap();
-    // let first_edge_id = path.get(0).unwrap();
+    let last_edge_id = path.back().unwrap();
+    let first_edge_id = path.get(0).unwrap();
 
-    // // Right side
-    // let last_node = edges[*last_edge_id].end_node;
-    // let mut maximum_weight_of_a_neighbor = 0;
-    // let mut total_weight_of_neighbors = 0;
-    // for child in edgelist[last_node].values() {
-    //     total_weight_of_neighbors += child.weight;
-    //     if child.id == *first_edge_id {continue;}
-    //     maximum_weight_of_a_neighbor = max(maximum_weight_of_a_neighbor, child.weight);
-    // }
+    // Right side
+    let last_node = edges[*last_edge_id].end_node;
+    let mut maximum_weight_of_a_neighbor = 0;
+    let mut total_weight_of_neighbors = 0;
+    for child in edgelist[last_node].values() {
+        total_weight_of_neighbors += child.weight;
+        if child.id == *first_edge_id {continue;}
+        maximum_weight_of_a_neighbor = max(maximum_weight_of_a_neighbor, child.weight);
+    }
     
-    // // Check if the flow is sufficient to get a longer path. If yes, return false.
-    // if weight_left > total_weight_of_neighbors - maximum_weight_of_a_neighbor {
-    //     return false;
-    // } 
+    // Check if the flow is sufficient to get a longer path. If yes, return false.
+    if weight_left > total_weight_of_neighbors - maximum_weight_of_a_neighbor + threshold {
+        return false;
+    } 
 
-    // // Left side
-    // let first_node = edges[*first_edge_id].start_node;
-    // let mut maximum_weight_of_parent_edge = 0;
-    // for parent in &parents[first_node] {
-    //     if parent.id != *last_edge_id {
-    //         maximum_weight_of_parent_edge = max(maximum_weight_of_parent_edge, parent.weight);
-    //     }
-    // }
+    // Left side
+    let first_node = edges[*first_edge_id].start_node;
+    let mut maximum_weight_of_parent_edge = 0;
+    for parent in &parents[first_node] {
+        if parent.id != *last_edge_id {
+            maximum_weight_of_parent_edge = max(maximum_weight_of_parent_edge, parent.weight);
+        }
+    }
 
-    // // Check if the flow is sufficient to get a longer path. If yes, return false.
-    // if weight_left + maximum_weight_of_parent_edge - weights_of_neighbors[first_node] > 0 {
-    //     return false;
-    // }
+    // Check if the flow is sufficient to get a longer path. If yes, return false.
+    if weight_left + maximum_weight_of_parent_edge - weights_of_neighbors[first_node] > threshold {
+        return false;
+    }
 
     true
 }
@@ -99,13 +99,14 @@ fn get_smaller_between_iself_and_reverse_complement(sequence: String) -> String 
 
 
 pub fn unique_sequences(safe_edge_paths: Vec<VecDeque<EdgeId>>, k: usize, weights: &[Weight], 
-    edgelist: &Edgelist, weights_of_neighbors: Vec<Weight>, string_sequences: Vec<String>, edges: &Vec<Edge>) -> HashSet<String> {
+    edgelist: &Edgelist, weights_of_neighbors: Vec<Weight>, string_sequences: Vec<String>, 
+    edges: &Vec<Edge>, threshold: Weight) -> HashSet<String> {
 
     let parents = create_parent_structure(edgelist);
     let mut safe_paths = HashSet::new();
     let  mut counter = 0;
     for mut sequence in safe_edge_paths {
-        if is_maximal(&sequence, edgelist, weights[counter], &parents, &weights_of_neighbors, edges) {
+        if is_maximal(&sequence, edgelist, weights[counter], &parents, &weights_of_neighbors, edges, threshold) {
             // let first_edge_id = sequence.pop_front();
             let first_edge_id = match sequence.pop_front() {
                 Some(id) => id,
