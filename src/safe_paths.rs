@@ -70,7 +70,7 @@ pub fn safe_paths(path: &str, k: usize, threshold: Weight, mut meter: Option<&mu
         //         meter.report();
         //     }
             // print_when_ends = true;
-        }
+        // }
         let mut safe_path: VecDeque<EdgeId> = VecDeque::new();
         let mut waiting_list: VecDeque<(VecDeque<EdgeId>, Weight)> = VecDeque::new(); // Path, excess flow      
 
