@@ -44,7 +44,7 @@ pub fn safe_paths(path: &str, k: usize, threshold: Weight, mut meter: Option<&mu
     // counter only for logging purposes
     // let mut counter = 0;
     // let mut greatest_flow = 0;
-    let mut longest_while = 0;
+    // let mut longest_while = 0;
     // let mut print_when_ends = false;
 
     // Keep track of visited edges while leakage is 0 to avoid infinite loops
@@ -74,7 +74,7 @@ pub fn safe_paths(path: &str, k: usize, threshold: Weight, mut meter: Option<&mu
         let mut safe_path: VecDeque<EdgeId> = VecDeque::new();
         let mut waiting_list: VecDeque<(VecDeque<EdgeId>, Weight)> = VecDeque::new(); // Path, excess flow      
 
-        // Initializing safe paths starting from edge, as well as thewaiting list for upcoming while loop
+        // Initializing safe paths starting from edge, as well as the waiting list for upcoming while loop
         safe_path.push_back(edge.id);
         let weigth_of_all_next_edges = weight_of_neighbors_of_each_node[edge.end_node];
         for next_edge in edgelist[edge.end_node].values() {
@@ -168,7 +168,7 @@ pub fn safe_paths(path: &str, k: usize, threshold: Weight, mut meter: Option<&mu
     }
 
 
-    let safe_paths = unique_sequences(safe_edge_paths, k, &extra_weight_of_paths, &edgelist, weight_of_neighbors_of_each_node, string_sequences, &edges, threshold);
+    let safe_paths = unique_sequences(safe_edge_paths, k, &extra_weight_of_paths, &edgelist, weight_of_neighbors_of_each_node, string_sequences, &edges);
 
 
     info!("Safe paths made to strings successfully.");

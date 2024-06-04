@@ -2,10 +2,12 @@
 mod tests {
     use std::vec::Vec;
     use crate::safe_paths::safe_paths;
+    use crate::memory_meter::MemoryMeter;
 
     #[test]
     fn simple_graph() {
-        let safe_paths = safe_paths("data/test_data/longer_k4.edgelist", 4);
+        let mut meter = MemoryMeter::new();
+        let safe_paths = safe_paths("data/test_data/longer_k4.edgelist", 4, 0, Some(&mut meter));
         let mut result = Vec::new();
         for element in safe_paths {
             result.push(element);
@@ -24,7 +26,8 @@ mod tests {
 
     #[test]
     fn right_outflow() {
-        let safe_paths = safe_paths("data/test_data/outflow_k2.edgelist", 2);
+        let mut meter = MemoryMeter::new();
+        let safe_paths = safe_paths("data/test_data/outflow_k2.edgelist", 2, 0, Some(&mut meter));
         let mut result = Vec::new();
         for element in safe_paths {
             result.push(element);
@@ -43,7 +46,8 @@ mod tests {
 
     #[test]
     fn two_cycles() {
-        let safe_paths = safe_paths("data/test_data/two_cycles_k5.edgelist", 5);
+        let mut meter = MemoryMeter::new();
+        let safe_paths = safe_paths("data/test_data/two_cycles_k5.edgelist", 5, 0, Some(&mut meter));
         let mut result = Vec::new();
         for element in safe_paths {
             result.push(element);
@@ -63,7 +67,8 @@ mod tests {
 
     #[test]
     fn only_maximals() {
-        let safe_paths = safe_paths("data/test_data/maximal_k3.edgelist", 3);
+        let mut meter = MemoryMeter::new();
+        let safe_paths = safe_paths("data/test_data/maximal_k3.edgelist", 3, 0, Some(&mut meter));
         let mut result = Vec::new();
         for element in safe_paths {
             result.push(element);
@@ -82,7 +87,8 @@ mod tests {
 
     #[test]
     fn should_fail() {
-        let _ = safe_paths("data/test_data/fake.edgelist", 10);
+        let mut meter = MemoryMeter::new();
+        let _ = safe_paths("data/test_data/fake.edgelist", 10, 0, Some(&mut meter));
         assert_eq!(1, 1);
     }
 }
