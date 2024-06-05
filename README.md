@@ -31,3 +31,20 @@ where:
 The algorithm can also be ran without a log file with the following command:
 
 `cargo run --release -- -k {k} --input '{arc_centric_dbg}' --output '{safe_paths}'`
+
+## Installation
+
+First, install [Rust](https://rustup.rs/) if not yet installed.
+
+### Installing Rust on Linux or macOS
+
+Run on terminal:
+`$ curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh`
+
+### Installing Rust on Windows
+
+Follow this [link](https://www.rust-lang.org/tools/install) and follow the instructions
+
+### Installing flowtigs
+
+Run `cargo add flowtigs` or add `flowtigs = "1.0.1"` to your Cargo.toml file.
