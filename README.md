@@ -50,7 +50,7 @@ Follow this [link](https://www.rust-lang.org/tools/install) and follow the instr
 
 Create a new project with
 
-`cargo new hello_cargo
+`cargo new hello_cargo <br>  
 cd hello_cargo`
 
 or navigate to your project directory, then run
