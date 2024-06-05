@@ -38,7 +38,8 @@ First, install [Rust](https://rustup.rs/) if not yet installed.
 
 ### Installing Rust on Linux or macOS
 
-Run on terminal:
+Run on terminal
+
 `$ curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh`
 
 ### Installing Rust on Windows
@@ -47,4 +48,13 @@ Follow this [link](https://www.rust-lang.org/tools/install) and follow the instr
 
 ### Installing flowtigs
 
-Run `cargo add flowtigs` or add `flowtigs = "1.0.1"` to your Cargo.toml file.
+Create a new project with
+
+`cargo new hello_cargo
+cd hello_cargo`
+
+or navigate to your project directory, then run
+
+`cargo add flowtigs` 
+
+or add `flowtigs = "1.0.1"` to your Cargo.toml file.
