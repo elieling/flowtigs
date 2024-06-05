@@ -7,7 +7,6 @@ mod safe_paths;
 use crate::safe_paths::safe_paths;
 use log::{info, LevelFilter};
 use simplelog::{ColorChoice, CombinedLogger, Config, TermLogger, TerminalMode};
-mod test;
 use clap::Parser;
 use std::io::Write;
 use std::io::BufWriter;
@@ -62,26 +61,7 @@ fn main() {
     let mut meter = MemoryMeter::new();
     info!("Memoery meter built successfully");
     // Choose the file you want to use
-    // -------------------------------------------------------------- 
-    // let path = "data/short_k13.edgelist";
-    // let path = "data/test_k12.edgelist";
-    // let path = "data/reference_k15.edgelist";
-    // let path = "data/long_k27.edgelist";
-    // let path = "data/ecoli_k12.edgelist";
-    // let path = "data/fake.edgelist";
-
-    // Test files
-    // let path = "data/test_data/short.edgelist";
-    // let path = "data/test_data/sufpref.edgelist";
-    // let path = "data/test_data/outflow.edgelist";
-    // let path = "data/test_data/outflow_k2.edgelist";
-    // let path = "data/test_data/longer_k4.edgelist";
-
-    // args
-    // let args: Vec<String> = args().collect();
-    // let path = &args[1];  // cargo run -- '../data/long_k27.edgelist'
-    // let k : usize = args[2].to_string().parse::<usize>().unwrap();
-    // -------------------------------------------------------------- 
+ 
     let cli = Cli::parse();
     initialise_logging(cli.log_level);
     info!(
@@ -111,5 +91,3 @@ fn main() {
 
 
 
-
-// cargo run -- --input 'data/test_data/maximal_k3.edgelist' -k 3 --output 'output.txt'
