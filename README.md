@@ -40,7 +40,9 @@ First, install [Rust](https://rustup.rs/) if not yet installed.
 
 Run the following code snippet in your terminal window
 
-`$ curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh`
+```
+$ curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh
+```
 
 ### Installing Rust on Windows
 
@@ -57,6 +59,8 @@ cd hello_cargo
 
 or navigate to your project directory, then run
 
-`cargo add flowtigs` 
+```
+cargo add flowtigs
+```
 
 or add `flowtigs = "1.0.1"` to your Cargo.toml file.
