@@ -5,6 +5,7 @@ use crate::safe_paths::edge::build_edge;
 use crate::safe_paths::edge::NodeId;
 use crate::safe_paths::edge::EdgeId;
 use crate::safe_paths::edge::Weight;
+use log::info;
 
 
 pub type Edgelist = Vec<HashMap<EdgeId, Edge>>;
@@ -62,6 +63,8 @@ pub fn build_graph(path: &str) -> (Vec<HashMap<EdgeId, Edge>>, NodeId, Vec<Strin
 
     // Reading the file
     let contents = read_file(path);
+
+    info!("Contents: {}, Path: {}",contents, path);
     
     // Setup
     let values: Vec<&str> = contents.split_whitespace().collect();
