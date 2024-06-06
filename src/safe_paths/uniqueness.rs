@@ -1,9 +1,9 @@
 
 use std::collections::HashSet;
-use crate::graph::Edgelist;
-use crate::edge::Edge;
-use crate::edge::EdgeId;
-use crate::edge::Weight;
+use crate::safe_paths::graph::Edgelist;
+use crate::safe_paths::edge::Edge;
+use crate::safe_paths::edge::EdgeId;
+use crate::safe_paths::edge::Weight;
 use std::collections::VecDeque;
 use std::cmp::max;
 use log::error;

@@ -1,10 +1,10 @@
 use std::fs;
 use std::collections::HashMap;
-use crate::edge::Edge;
-use crate::edge::build_edge;
-use crate::edge::NodeId;
-use crate::edge::EdgeId;
-use crate::edge::Weight;
+use crate::safe_paths::edge::Edge;
+use crate::safe_paths::edge::build_edge;
+use crate::safe_paths::edge::NodeId;
+use crate::safe_paths::edge::EdgeId;
+use crate::safe_paths::edge::Weight;
 
 
 pub type Edgelist = Vec<HashMap<EdgeId, Edge>>;

@@ -1,10 +1,12 @@
 use std::fs::File;
-mod edge;
-mod graph;
-mod flow;
-mod uniqueness;
-mod safe_paths;
-use crate::safe_paths::safe_paths;
+mod safe_paths {
+    mod edge;
+    mod graph;
+    mod flow;
+    mod uniqueness;
+    pub mod safe_paths;
+}
+use crate::safe_paths::safe_paths::safe_paths;
 use log::{info, LevelFilter};
 use simplelog::{ColorChoice, CombinedLogger, Config, TermLogger, TerminalMode};
 use clap::Parser;
@@ -79,8 +81,6 @@ fn main() {
     // println!("\n++++++++ Then, the safe paths as final unique strings: ++++++++");
     let mut counter = 0;
     for sequence in &safe_paths {
-        // println!("Path {}:", counter);
-        // println!("{} ", sequence);
         writeln!(output, ">Path_{}", counter).unwrap();
         writeln!(output, "{} ", sequence).unwrap();
         counter += 1;

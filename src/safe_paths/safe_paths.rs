@@ -1,10 +1,10 @@
 use std::collections::HashSet;
 use std::collections::VecDeque;
-use crate::edge::EdgeId;
-use crate::edge::Weight;
-use crate::graph::build_graph;
-use crate::flow::initialize_weight_of_neighbors_from;
-use crate::uniqueness::unique_sequences;
+use crate::safe_paths::edge::EdgeId;
+use crate::safe_paths::edge::Weight;
+use crate::safe_paths::graph::build_graph;
+use crate::safe_paths::flow::initialize_weight_of_neighbors_from;
+use crate::safe_paths::uniqueness::unique_sequences;
 // use crate::recursion::recursion;
 use crate::memory_meter::MemoryMeter;
 use log::info;
