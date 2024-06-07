@@ -109,6 +109,7 @@ fn main() {
         }
     };
     let edge_centric_path = PathBuf::from(current_directory_str.to_owned() + &"/edge_centric_graphs/".to_string() + &string_stem + ".edgelist");
+    info!("Path: {}", edge_centric_path.display());
     let mut edge_centric_file = BufWriter::new(File::create(&edge_centric_path).unwrap());
 
     // Transform the node-centric graph in the input into an edge-centric graph
