@@ -1,4 +1,3 @@
-use std::fs;
 use std::fs::File;
 mod safe_paths {
     mod edge;
@@ -11,13 +10,14 @@ mod node_to_arc_centric {
     pub mod node_to_arc;
 }
 use crate::safe_paths::safe_paths::safe_paths;
-use crate::node_to_arc_centric::node_to_arc::node_to_arc_centric_dbg_with_memory_meter;
+use crate::node_to_arc_centric::node_to_arc::node_to_arc_centric_dbg;
 use log::{info, LevelFilter};
 use simplelog::{ColorChoice, CombinedLogger, Config, TermLogger, TerminalMode};
 use clap::Parser;
 use std::io::Write;
 use std::io::{BufReader, BufWriter};
 use std::path::PathBuf;
+use std::env;
 use crate::memory_meter::MemoryMeter;
 mod memory_meter;
  
@@ -25,8 +25,8 @@ mod memory_meter;
 
 #[derive(Parser, Debug)]
 struct Cli {
-    /// The input file containing an arc-centric de Bruijn graph.
-    /// The file should be an edgelist with the number of nodes on the first row, then one row for each edge containing the starting node, end node, weight and sequence; each separated by one space.
+    /// The input file containing a node-centric de Bruijn graph.
+    /// The file should be the output of ggcat or bcalm.
     #[clap(long)]
     input: PathBuf,
 
@@ -38,7 +38,7 @@ struct Cli {
     #[clap(short)]
     threshold: i64,
 
-    /// The output file where the arc-centric de Bruijn graph should be written to.
+    /// The output file where the flowtigs should be written to.
     #[clap(long)]
     output: PathBuf,
 
@@ -62,9 +62,10 @@ pub fn initialise_logging(log_level: LevelFilter) {
 
 pub fn new_file(path: &PathBuf) -> std::io::Result<()> {
     let mut f = File::create(path)?;
-    f.write_all(&1234_u32.to_be_bytes())?;
+    f.write_all("".as_bytes())?;
     Ok(())
 }
+
 
 
 fn main() {
@@ -80,7 +81,7 @@ fn main() {
 
     let mut input = BufReader::new(File::open(&cli.input).unwrap());
 
-    // Transform the node-centric graph in the input into an edge-centric graph
+    // Convert data types
     let input_file_stem = cli.input.file_stem();
     let mut string_stem = String::new();
      if let Some(osstr_stem) = input_file_stem {
@@ -92,17 +93,32 @@ fn main() {
     } else {
         info!("Error: failed to convert input file stem to string");
     }
-    let edge_centric_path = PathBuf::from("src/edge_centric_graphs/".to_string() + &string_stem + ".edgelist");
-    // let mut _empty_file = new_file(&edge_centric_path); // File::create(edge_centric_path)?; // fs::write(&edge_centric_path, "AAAA");
-    info!("Path: {}", edge_centric_path.display());
-    info!("Input: {}", cli.input.display());
-    info!("Output: {}", cli.output.display());
+    let current_directory = env::current_dir();
+    let current_existing_directory: PathBuf = match current_directory {
+        Ok(path) => path,
+        Err(e) => {
+            info!("Failed to get current directory: {}", e);
+            return;
+        }
+    };
+    let current_directory_str: &str = match current_existing_directory.to_str() {
+        Some(s) => s,
+        None => {
+            info!("Failed to convert current directory to string");
+            return;
+        }
+    };
+    let edge_centric_path = PathBuf::from(current_directory_str.to_owned() + &"/edge_centric_graphs/".to_string() + &string_stem + ".edgelist");
     let mut edge_centric_file = BufWriter::new(File::create(&edge_centric_path).unwrap());
-    node_to_arc_centric_dbg_with_memory_meter(cli.k, &mut input, &mut edge_centric_file, Some(&mut meter));
+
+    // Transform the node-centric graph in the input into an edge-centric graph
+    node_to_arc_centric_dbg(cli.k, &mut input, &mut edge_centric_file);
 
     meter.report();
     info!("Edge-centric graph built successfully!");
 
+    //Ensure the data is written on the file
+    edge_centric_file.flush().unwrap();
 
     // Compute safe paths from edge-centric graph
     let mut edge_centric_string_path = String::new();

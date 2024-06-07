@@ -1,10 +1,10 @@
 // This code is adapted from https://github.com/sebschmi/node-to-arc-centric-dbg
 
-use crate::memory_meter::MemoryMeter;
+
 use genome_graph::bigraph::interface::static_bigraph::StaticEdgeCentricBigraph;
 use genome_graph::bigraph::traitgraph::index::GraphIndex;
 use genome_graph::bigraph::traitgraph::interface::{
-    Edge, ImmutableGraphContainer, NavigableGraph, Neighbor,
+    ImmutableGraphContainer, NavigableGraph, Neighbor,
 };
 use genome_graph::bigraph::traitgraph::traitsequence::interface::Sequence;
 use genome_graph::compact_genome::implementation::DefaultSequenceStore;
@@ -13,33 +13,17 @@ use genome_graph::compact_genome::interface::sequence::GenomeSequence;
 use genome_graph::compact_genome::interface::sequence_store::SequenceStore;
 use genome_graph::io::bcalm2::read_bigraph_from_bcalm2_as_edge_centric;
 use genome_graph::types::PetBCalm2EdgeGraph;
-use log::{info, warn};
+use log::info;
 use std::io::Write;
 use std::io::BufRead;
 
 
 
-
-
-pub fn node_to_arc_centric_dbg_with_memory_meter(
-    k: usize,
-    input: &mut impl BufRead,
-    output: &mut impl Write,
-    meter: Option<&mut MemoryMeter>,
-) {
+pub fn node_to_arc_centric_dbg(k: usize, input: &mut impl BufRead, output: &mut impl Write) {
     info!("Reading graph");
     let mut sequence_store = DefaultSequenceStore::<DnaAlphabet>::new();
     let graph: PetBCalm2EdgeGraph<_> =
         read_bigraph_from_bcalm2_as_edge_centric(input, &mut sequence_store, k).unwrap();
-    info!(
-        "Finished graph reading: {} nodes and {} edges",
-        graph.node_count(),
-        graph.edge_count()
-    );
-
-    if let Some(meter) = meter {
-        meter.report();
-    }
 
     info!("Writing graph...");
     output_arc_centric_dbg(&graph, &sequence_store, k, output);
@@ -110,26 +94,11 @@ fn output_arc_centric_dbg(
             };
 
             let kmer_count = edge_data.length - (k - 1);
-            if edge_data.total_abundance % kmer_count != 0 {
-                let sequence = sequence_store.get(&edge_data.sequence_handle);
-                let sequence = &sequence[..(k + 10).min(sequence.len())];
-                warn!(
-                    "Found edge with non-integer average abundance: {}",
-                    sequence.as_string()
-                );
-            }
 
-            let mirror_edge = graph.mirror_edge_edge_centric(edge_id).unwrap();
-            let Edge {
-                from_node: mirror_n1,
-                to_node: mirror_n2,
-            } = graph.edge_endpoints(mirror_edge);
             let n1 = n1.as_usize();
             let n2 = n2.as_usize();
-            let mirror_n1 = mirror_n1.as_usize();
-            let mirror_n2 = mirror_n2.as_usize();
             let weight = edge_data.total_abundance / kmer_count * weight_multiplier;
-            write!(output, "{n1} {n2} {weight} {mirror_n1} {mirror_n2} ").unwrap();
+            write!(output, "{n1} {n2} {weight} ").unwrap();
 
             let sequence = sequence_store.get(&edge_data.sequence_handle);
             if edge_data.forwards {
@@ -145,6 +114,3 @@ fn output_arc_centric_dbg(
         }
     }
 }
-
-
-

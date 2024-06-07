@@ -5,7 +5,6 @@ use crate::safe_paths::edge::build_edge;
 use crate::safe_paths::edge::NodeId;
 use crate::safe_paths::edge::EdgeId;
 use crate::safe_paths::edge::Weight;
-use log::info;
 
 
 pub type Edgelist = Vec<HashMap<EdgeId, Edge>>;
@@ -13,10 +12,13 @@ pub type Edgelist = Vec<HashMap<EdgeId, Edge>>;
 
 // Reading the file
 fn read_file(path: &str) -> String {
-    // println!("Using file {}", path);
-    fs::read_to_string(path)
-        .expect("Should have been able to read the file")
+    println!("Using file {}", path);
+    let content = fs::read_to_string(path)
+        .expect("Should have been able to read the file");
+    content
 }
+
+
 
 
 // Creating data structure representing the graph and calculating indegree and outdegree of each node
@@ -63,8 +65,6 @@ pub fn build_graph(path: &str) -> (Vec<HashMap<EdgeId, Edge>>, NodeId, Vec<Strin
 
     // Reading the file
     let contents = read_file(path);
-
-    info!("Contents: {}, Path: {}",contents, path);
     
     // Setup
     let values: Vec<&str> = contents.split_whitespace().collect();
