@@ -1,0 +1,1 @@
+Folder that stores edge-centric graphs of each run. The graphs can be deleted if not needed, but do not delete the folder.
