@@ -48,19 +48,43 @@ $ curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh
 
 Follow this [link](https://www.rust-lang.org/tools/install) and follow the instructions to install rustup.
 
-### Installing flowtigs
+## Running flowtigs
+
+### Running flowitgs
+
+Clone this project
+```
+git clone https://github.com/elieling/flowtigs.git
+cd flowtigs
+```
+Run flowtigs with the folowing code in the project directory
+```
+cargo run -- --input "<input file>" -k <k> -t <threshold> --output "<output file>"
+```
+where 
+- `<input file>` represents the path to the input file
+- `<k>` represents the desired k-value
+- `<threshold>` represents the desired threshold for filtering. To run flowtigs without filtering, use threshold 0
+- `<output file>` represents the path to the desired output file
+
+### Running flowtigs insid
 
 Create a new project with
 
 ```
-cargo new hello_cargo <br>  
-cd hello_cargo
+cargo new <new project name> 
+cd <new project name>
 ```
 
-or navigate to your project directory, then run
+or navigate to your project directory.
+
+Then, run
 
 ```
 cargo add flowtigs
 ```
 
-or add `flowtigs = "1.0.1"` to your Cargo.toml file.
+or add `flowtigs = "1.1.0"` to your Cargo.toml file.
+
+
+## Input
