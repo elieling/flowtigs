@@ -1,4 +1,5 @@
 use std::fs::File;
+use std::fs;
 mod safe_paths {
     mod edge;
     mod graph;
@@ -17,7 +18,6 @@ use clap::Parser;
 use std::io::Write;
 use std::io::{BufReader, BufWriter};
 use std::path::PathBuf;
-use std::env;
 use crate::memory_meter::MemoryMeter;
 mod memory_meter;
  
@@ -93,25 +93,9 @@ fn main() {
     } else {
         info!("Error: failed to convert input file stem to string");
     }
-    let current_directory = env::current_dir();
-    let current_existing_directory: PathBuf = match current_directory {
-        Ok(path) => path,
-        Err(e) => {
-            info!("Failed to get current directory: {}", e);
-            return;
-        }
-    };
-    let current_directory_str: &str = match current_existing_directory.to_str() {
-        Some(s) => s,
-        None => {
-            info!("Failed to convert current directory to string");
-            return;
-        }
-    };
+    
     fs::create_dir_all("edge_centric_graphs").expect("Could not create new folder");
-    // let edge_centric_path = PathBuf::from(current_directory_str.to_owned() + &"/edge_centric_graphs/".to_string() + &string_stem + ".edgelist");
     let edge_centric_path = PathBuf::from("edge_centric_graphs/".to_string() + &string_stem + ".edgelist");
-    info!("Path: {}", edge_centric_path.display());
     let mut edge_centric_file = BufWriter::new(File::create(&edge_centric_path).unwrap());
 
     // Transform the node-centric graph in the input into an edge-centric graph

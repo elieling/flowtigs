@@ -12,7 +12,6 @@ pub type Edgelist = Vec<HashMap<EdgeId, Edge>>;
 
 // Reading the file
 fn read_file(path: &str) -> String {
-    println!("Using file {}", path);
     let content = fs::read_to_string(path)
         .expect("Should have been able to read the file");
     content
