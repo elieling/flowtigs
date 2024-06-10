@@ -108,7 +108,9 @@ fn main() {
             return;
         }
     };
-    let edge_centric_path = PathBuf::from(current_directory_str.to_owned() + &"/edge_centric_graphs/".to_string() + &string_stem + ".edgelist");
+    fs::create_dir_all("edge_centric_graphs").expect("Could not create new folder");
+    // let edge_centric_path = PathBuf::from(current_directory_str.to_owned() + &"/edge_centric_graphs/".to_string() + &string_stem + ".edgelist");
+    let edge_centric_path = PathBuf::from("edge_centric_graphs/".to_string() + &string_stem + ".edgelist");
     info!("Path: {}", edge_centric_path.display());
     let mut edge_centric_file = BufWriter::new(File::create(&edge_centric_path).unwrap());
 
