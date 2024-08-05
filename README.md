@@ -47,8 +47,8 @@ ggcat takes reads as input and outputs a file that can be used by flowtigs, see 
 git clone https://github.com/algbio/ggcat --recursive
 cd ggcat/
 git checkout a91ecc97f286b737b37195c0a86f0e11ad6bfc3b
+cargo update
 cargo install --path crates/cmdline/ --locked --features "kmer-counters"
-cargo fetch
 ```
 
 Then, ggcat is run with
