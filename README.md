@@ -24,11 +24,10 @@ Clone this project
 ```
 git clone https://github.com/elieling/flowtigs.git
 cd flowtigs
-cargo update time
 ```
 Run flowtigs with the folowing code in the project directory
 ```
-cargo run -- --input "<input file>" -k <k> -t <threshold> --output "<output file>"
+flowtigs --input "<input file>" -k <k> -t <threshold> --output "<output file>"
 ```
 where 
 - `<input file>` represents the path to the input file
