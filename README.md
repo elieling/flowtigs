@@ -24,6 +24,7 @@ Clone this project
 ```
 git clone https://github.com/elieling/flowtigs.git
 cd flowtigs
+cargo update time
 ```
 Run flowtigs with the folowing code in the project directory
 ```
