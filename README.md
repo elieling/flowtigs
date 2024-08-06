@@ -1,12 +1,18 @@
 # Flowtigs
 
-An algorithm for calculating flowtigs in a De Bruijn graph of DNA reads in metagenomes.
+An algorithm for computing flowtigs in a De Bruijn graph of DNA reads in metagenomes.
 
-## Installation
+The steps to compute flowtigs from reads are the following:
+
+-  Install Rust
+-  Run ggcat or bcalm on the reads
+-  Run flowtigs on the output of ggcat or bcalm
+
+## Installation of Rust
 
 First, install [Rust](https://rustup.rs/) if not yet installed.
 
-### Installing Rust on Linux or macOS
+#### Installing Rust on Linux or macOS
 
 Run the following code snippet in your terminal window
 
@@ -14,31 +20,9 @@ Run the following code snippet in your terminal window
 $ curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh
 ```
 
-### Installing Rust on Windows
+#### Installing Rust on Windows
 
 Follow this [link](https://www.rust-lang.org/tools/install) and follow the instructions to install rustup.
-
-## Running flowtigs
-
-Clone this project
-```
-git clone https://github.com/elieling/flowtigs.git
-cd flowtigs
-```
-Run flowtigs with the folowing code in the project directory
-```
-flowtigs --input "<input file>" -k <k> -t <threshold> --output "<output file>"
-```
-where 
-- `<input file>` represents the path to the input file
-- `<k>` represents the desired k-value
-- `<threshold>` represents the desired threshold for filtering. To run flowtigs without filtering, use threshold 0
-- `<output file>` represents the path to the desired output file
-
-
-## Input
-
-The input of flowtigs should be a file in the same format as the output of [bcalm](https://github.com/GATB/bcalm) or [ggcat](https://github.com/algbio/ggcat). An example can be seen [here](https://github.com/elieling/flowtigs-data).
 
 ### Running ggcat
 
@@ -62,6 +46,29 @@ where
 - `<minimum multiplicity>` minimum multiplicity needed for a k-mer to occur
 - `<input file>` represents the path to the input file which contains the reads
 - `<output file>` represents the path to the desired output file, which will be the input file for flowtigs
+
+## Running flowtigs
+
+Clone this project
+```
+git clone https://github.com/elieling/flowtigs.git
+cd flowtigs
+```
+Run flowtigs with the folowing code in the project directory
+```
+flowtigs --input "<input file>" -k <k> -t <threshold> --output "<output file>"
+```
+where 
+- `<input file>` represents the path to the input file
+- `<k>` represents the desired k-value
+- `<threshold>` represents the desired threshold for filtering. To run flowtigs without filtering, use threshold 0
+- `<output file>` represents the path to the desired output file
+
+
+## Input
+
+The input of flowtigs should be a file in the same format as the output of [bcalm](https://github.com/GATB/bcalm) or [ggcat](https://github.com/algbio/ggcat). An example can be seen [here](https://github.com/elieling/flowtigs-data).
+
 
 ## Output
 
