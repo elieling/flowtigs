@@ -1,6 +1,6 @@
 # Flowtigs
 
-An algorithm for computing flowtigs in a De Bruijn graph of DNA reads in metagenomes.
+An algorithm for computing [flowtigs](https://www.biorxiv.org/content/10.1101/2023.11.17.567499v1) from DNA reads of a metagenome.
 
 The steps to compute flowtigs from reads are the following:
 
