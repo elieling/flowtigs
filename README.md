@@ -49,7 +49,7 @@ where
 
 ## Running flowtigs
 
-The input of flowtigs should be a file in the same format as the output of [bcalm](https://github.com/GATB/bcalm) or [ggcat](https://github.com/algbio/ggcat). An example can be seen [here]([https://github.com/elieling/flowtigs-data](https://github.com/elieling/flowtigs-data/tree/main/output_of_ggcat)).
+The input of flowtigs should be a file in the same format as the output of [bcalm](https://github.com/GATB/bcalm) or [ggcat](https://github.com/algbio/ggcat). An example can be seen [here]([https://github.com/elieling/flowtigs-data](https://github.com/elieling/flowtigs-data/tree/main/output_of_ggcat).
 
 Clone this project with the following commands
 ```
