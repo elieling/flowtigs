@@ -12,7 +12,7 @@ The steps to compute flowtigs from reads are the following:
 
 First, install [Rust](https://rustup.rs/) if not yet installed.
 
-#### Installing Rust on Linux or macOS
+### Installing Rust on Linux or macOS
 
 Run the following code snippet in your terminal window
 
@@ -20,13 +20,13 @@ Run the following code snippet in your terminal window
 $ curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh
 ```
 
-#### Installing Rust on Windows
+### Installing Rust on Windows
 
 Follow this [link](https://www.rust-lang.org/tools/install) and follow the instructions to install rustup.
 
-### Running ggcat
+## Running ggcat
 
-ggcat takes reads as input and outputs a file that can be used by flowtigs, see [example](https://github.com/elieling/flowtigs-data). Download ggcat with the following commands
+ggcat takes reads as input and outputs a file that can be used by flowtigs, see [example](https://github.com/elieling/flowtigs-data) of the input and output format of ggcat. Download ggcat with the following commands
 ```
 git clone https://github.com/algbio/ggcat --recursive
 cd ggcat/
@@ -49,12 +49,14 @@ where
 
 ## Running flowtigs
 
-Clone this project
+The input of flowtigs should be a file in the same format as the output of [bcalm](https://github.com/GATB/bcalm) or [ggcat](https://github.com/algbio/ggcat). An example can be seen [here]([https://github.com/elieling/flowtigs-data](https://github.com/elieling/flowtigs-data/tree/main/output_of_ggcat)).
+
+Clone this project with the following commands
 ```
 git clone https://github.com/elieling/flowtigs.git
 cd flowtigs
 ```
-Run flowtigs with the folowing code in the project directory
+Then, run flowtigs with the folowing code in the project directory
 ```
 flowtigs --input "<input file>" -k <k> -t <threshold> --output "<output file>"
 ```
@@ -65,12 +67,7 @@ where
 - `<output file>` represents the path to the desired output file
 
 
-## Input
+### Output
 
-The input of flowtigs should be a file in the same format as the output of [bcalm](https://github.com/GATB/bcalm) or [ggcat](https://github.com/algbio/ggcat). An example can be seen [here](https://github.com/elieling/flowtigs-data).
-
-
-## Output
-
-The output of this algorithm is a FASTA file, which contains the safe maximal string sequences named by an index from 0 to `<total number of sequences> - 1`.
+The output of flowtigs is a FASTA file, which contains the safe maximal string sequences named by an index from 0 to `<total number of sequences> - 1`. See example [here](https://github.com/elieling/flowtigs-data/tree/main/output_of_flowtigs).
 
