@@ -4,11 +4,11 @@ An algorithm for computing [flowtigs](https://www.biorxiv.org/content/10.1101/20
 
 The steps to compute flowtigs from reads are the following:
 
--  Install Rust
--  Run ggcat or bcalm on the reads
--  Run flowtigs on the output of ggcat or bcalm
+1.  [Install Rust](##-1.-installation-of-rust)
+2.  [Run ggcat or bcalm on the reads](##-2.-running-ggcat)
+3.  [Run flowtigs on the output of ggcat or bcalm](##-3.-running-flowtigs)
 
-## Installation of Rust
+## 1. Installation of Rust
 
 First, install [Rust](https://rustup.rs/) if not yet installed.
 
@@ -24,7 +24,7 @@ $ curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh
 
 Follow this [link](https://www.rust-lang.org/tools/install) and follow the instructions to install rustup.
 
-## Running ggcat
+## 2. Running ggcat
 
 ggcat takes reads as input and outputs a file that can be used by flowtigs, see [example](https://github.com/elieling/flowtigs-data) of the input and output format of ggcat. Download ggcat with the following commands
 ```
@@ -47,7 +47,7 @@ where
 - `<input file>` represents the path to the input file which contains the reads
 - `<output file>` represents the path to the desired output file, which will be the input file for flowtigs
 
-## Running flowtigs
+## 3. Running flowtigs
 
 The input of flowtigs should be a file in the same format as the output of [bcalm](https://github.com/GATB/bcalm) or [ggcat](https://github.com/algbio/ggcat). An example can be seen [here]([https://github.com/elieling/flowtigs-data](https://github.com/elieling/flowtigs-data/tree/main/output_of_ggcat).
 
