@@ -47,6 +47,12 @@ where
 - `<input file>` represents the path to the input file which contains the reads
 - `<output file>` represents the path to the desired output file, which will be the input file for flowtigs
 
+If you get the error message "Command 'ggcat' not found", instead run
+
+```
+~/.cargo/bin/ggcat build -k <k> -j <threads> -e -s <minimum multiplicity> '<input file name>' -o '<output file name>'
+```
+
 ## 3. Running flowtigs
 
 The input of flowtigs should be a file in the same format as the output of [bcalm](https://github.com/GATB/bcalm) or [ggcat](https://github.com/algbio/ggcat). An example can be seen [here](https://github.com/elieling/flowtigs-data/tree/main/output_of_ggcat).
@@ -66,6 +72,12 @@ where
 - `<k>` represents the desired k-value
 - `<threshold>` represents the desired threshold for filtering. To run flowtigs without filtering, use threshold 0
 - `<output file>` represents the path to the desired output file
+
+If you get the error message "Command 'flowtigs' not found", instead run
+
+```
+~/.cargo/bin/flowtigs --input "<input file>" -k <k> -t <threshold> --output "<output file>"
+```
 
 
 ### Output
