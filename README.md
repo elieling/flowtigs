@@ -4,9 +4,9 @@ An algorithm for computing [flowtigs](https://www.biorxiv.org/content/10.1101/20
 
 The steps to compute flowtigs from reads are the following:
 
-1.  [Install Rust](##-1.-installation-of-rust)
-2.  [Run ggcat or bcalm on the reads](##-2.-running-ggcat)
-3.  [Run flowtigs on the output of ggcat or bcalm](##-3.-running-flowtigs)
+1.  [Install Rust](#1-installation-of-rust)
+2.  [Run ggcat or bcalm on the reads](#2-running-ggcat)
+3.  [Run flowtigs on the output of ggcat or bcalm](#3-running-flowtigs)
 
 ## 1. Installation of Rust
 
