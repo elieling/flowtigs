@@ -26,7 +26,7 @@ Follow this [link](https://www.rust-lang.org/tools/install) and follow the instr
 
 ## 2. Running ggcat
 
-ggcat takes reads as input and outputs a file that can be used by flowtigs, see [example](https://github.com/elieling/flowtigs-data) of the input and output format of ggcat. Download ggcat with the following commands
+[ggcat](https://github.com/algbio/ggcat) takes reads as input and outputs a file that can be used by flowtigs, see [example](https://github.com/elieling/flowtigs-data) of the input and output format of ggcat. Download ggcat with the following commands
 ```
 git clone https://github.com/algbio/ggcat --recursive
 cd ggcat/
@@ -49,7 +49,7 @@ where
 
 ## 3. Running flowtigs
 
-The input of flowtigs should be a file in the same format as the output of [bcalm](https://github.com/GATB/bcalm) or [ggcat](https://github.com/algbio/ggcat). An example can be seen [here]([https://github.com/elieling/flowtigs-data](https://github.com/elieling/flowtigs-data/tree/main/output_of_ggcat).
+The input of flowtigs should be a file in the same format as the output of [bcalm](https://github.com/GATB/bcalm) or [ggcat](https://github.com/algbio/ggcat). An example can be seen [here](https://github.com/elieling/flowtigs-data/tree/main/output_of_ggcat).
 
 Clone this project with the following commands
 ```
