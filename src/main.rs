@@ -7,7 +7,6 @@ mod safe_paths;
 use crate::safe_paths::safe_paths;
 use log::{info, LevelFilter};
 use simplelog::{ColorChoice, CombinedLogger, Config, TermLogger, TerminalMode};
-mod test;
 use clap::Parser;
 use std::io::Write;
 use std::io::BufWriter;
