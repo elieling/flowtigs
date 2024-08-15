@@ -1,9 +1,9 @@
 
 use std::collections::HashSet;
-use crate::safe_paths::graph::Edgelist;
-use crate::safe_paths::edge::Edge;
-use crate::safe_paths::edge::EdgeId;
-use crate::safe_paths::edge::Weight;
+use crate::graph::Edgelist;
+use crate::edge::Edge;
+use crate::edge::EdgeId;
+use crate::edge::Weight;
 use std::collections::VecDeque;
 use std::cmp::max;
 use log::error;
@@ -29,7 +29,7 @@ pub fn create_parent_structure(edgelist: &Edgelist) -> Vec<Vec<Edge>> {
 
 // Check if the safe path is maximal
 pub fn is_maximal(path: &VecDeque<EdgeId>, edgelist: &Edgelist, weight_left: Weight, parents: &[Vec<Edge>], 
-    weights_of_neighbors: &[Weight], edges: &Vec<Edge>) -> bool {
+    weights_of_neighbors: &[Weight], edges: &Vec<Edge>, threshold: Weight) -> bool {
 
     let last_edge_id = path.back().unwrap();
     let first_edge_id = path.get(0).unwrap();
@@ -45,7 +45,7 @@ pub fn is_maximal(path: &VecDeque<EdgeId>, edgelist: &Edgelist, weight_left: Wei
     }
     
     // Check if the flow is sufficient to get a longer path. If yes, return false.
-    if weight_left > total_weight_of_neighbors - maximum_weight_of_a_neighbor {
+    if weight_left > total_weight_of_neighbors - maximum_weight_of_a_neighbor + threshold {
         return false;
     } 
 
@@ -59,7 +59,7 @@ pub fn is_maximal(path: &VecDeque<EdgeId>, edgelist: &Edgelist, weight_left: Wei
     }
 
     // Check if the flow is sufficient to get a longer path. If yes, return false.
-    if weight_left + maximum_weight_of_parent_edge - weights_of_neighbors[first_node] > 0 {
+    if weight_left + maximum_weight_of_parent_edge - weights_of_neighbors[first_node] > threshold {
         return false;
     }
 
@@ -100,13 +100,13 @@ fn get_smaller_between_iself_and_reverse_complement(sequence: String) -> String 
 
 pub fn unique_sequences(safe_edge_paths: Vec<VecDeque<EdgeId>>, k: usize, weights: &[Weight], 
     edgelist: &Edgelist, weights_of_neighbors: Vec<Weight>, string_sequences: Vec<String>, 
-    edges: &Vec<Edge>) -> HashSet<String> {
+    edges: &Vec<Edge>, threshold: Weight) -> HashSet<String> {
 
     let parents = create_parent_structure(edgelist);
     let mut safe_paths = HashSet::new();
     let  mut counter = 0;
     for mut sequence in safe_edge_paths {
-        if is_maximal(&sequence, edgelist, weights[counter], &parents, &weights_of_neighbors, edges) {
+        if is_maximal(&sequence, edgelist, weights[counter], &parents, &weights_of_neighbors, edges, threshold) {
             // let first_edge_id = sequence.pop_front();
             let first_edge_id = match sequence.pop_front() {
                 Some(id) => id,

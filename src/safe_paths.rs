@@ -1,10 +1,10 @@
 use std::collections::HashSet;
 use std::collections::VecDeque;
-use crate::safe_paths::edge::EdgeId;
-use crate::safe_paths::edge::Weight;
-use crate::safe_paths::graph::build_graph;
-use crate::safe_paths::flow::initialize_weight_of_neighbors_from;
-use crate::safe_paths::uniqueness::unique_sequences;
+use crate::edge::EdgeId;
+use crate::edge::Weight;
+use crate::graph::build_graph;
+use crate::flow::initialize_weight_of_neighbors_from;
+use crate::uniqueness::unique_sequences;
 // use crate::recursion::recursion;
 use crate::memory_meter::MemoryMeter;
 use log::info;
@@ -41,19 +41,40 @@ pub fn safe_paths(path: &str, k: usize, threshold: Weight, mut meter: Option<&mu
     let weight_of_neighbors_of_each_node: Vec<i64> = initialize_weight_of_neighbors_from(&edgelist);
 
 
+    // counter only for logging purposes
+    // let mut counter = 0;
+    // let mut greatest_flow = 0;
+    let mut longest_while = 0;
+    // let mut print_when_ends = false;
+
     // Keep track of visited edges while leakage is 0 to avoid infinite loops
     let mut visited_edges: HashSet<EdgeId> = HashSet::new(); 
 
     // Find all safe paths that start on a specific edge. Repeat for all edges
     for edge in &edges {
 
+        // Logging
+        // if counter == (total_edges / 2) + (total_edges / 3) ||  counter == total_edges / 2 || counter == total_edges / 4 || counter == total_edges / 10 {
+        //     info!("----- Coumputed {} / {} edges", counter, total_edges);
+        //     if let Some(ref mut meter) = meter {
+        //         meter.report();
+        //     }
+        // }
+
         // Initializing variables
         let excess_flow = edge.weight;
-
+        // if excess_flow > greatest_flow {
+        //     greatest_flow = excess_flow;
+        //     info!("New greatest flow: {}. Coumputed {} / {} edges", greatest_flow, counter, total_edges);
+        //     if let Some(ref mut meter) = meter {
+        //         meter.report();
+        //     }
+            // print_when_ends = true;
+        // }
         let mut safe_path: VecDeque<EdgeId> = VecDeque::new();
         let mut waiting_list: VecDeque<(VecDeque<EdgeId>, Weight)> = VecDeque::new(); // Path, excess flow      
 
-        // Initializing safe paths starting from edge, as well as the waiting list for upcoming while loop
+        // Initializing safe paths starting from edge, as well as thewaiting list for upcoming while loop
         safe_path.push_back(edge.id);
         let weigth_of_all_next_edges = weight_of_neighbors_of_each_node[edge.end_node];
         for next_edge in edgelist[edge.end_node].values() {
@@ -66,6 +87,7 @@ pub fn safe_paths(path: &str, k: usize, threshold: Weight, mut meter: Option<&mu
         }
 
 
+        let mut length_of_while = 0;
         // Iterating through each safe path starting with edge
         while !waiting_list.is_empty() {
 
@@ -114,7 +136,30 @@ pub fn safe_paths(path: &str, k: usize, threshold: Weight, mut meter: Option<&mu
                     }
                 }
             }
+            // length_of_while += 1;
+            // if length_of_while == 2 * longest_while || length_of_while == 5 * longest_while || length_of_while == 10 * longest_while || length_of_while == 25 * longest_while || length_of_while == 50 * longest_while || length_of_while == 100 * longest_while {
+            //     info!("##### LONG WHILE: {}. Flow value of first edge: {}. Computed {} / {} edges", length_of_while, edge.weight, counter, total_edges);
+            //     info!("##### First edge id: {}, latest edge id: {}, excess flow: {}", edge.id, current_edge.id, excess_flow);
+            //     if let Some(ref mut meter) = meter {
+            //         meter.report();
+            //     }
+            // }
         }
+        // if length_of_while > longest_while {
+        //     longest_while = length_of_while;
+        //     info!("New longest while: {}. Coumputed {} / {} edges", longest_while, counter, total_edges);
+        //     if let Some(ref mut meter) = meter {
+        //         meter.report();
+        //     }
+        // }
+        // if print_when_ends {
+        //     print_when_ends = false;
+        //     info!("ENDED. Coumputed {} / {} edges", counter, total_edges);
+        //     if let Some(ref mut meter) = meter {
+        //         meter.report();
+        //     }
+        // }
+        // counter += 1;
     }
 
     info!("Safe paths calculated successfully.");
@@ -123,7 +168,7 @@ pub fn safe_paths(path: &str, k: usize, threshold: Weight, mut meter: Option<&mu
     }
 
 
-    let safe_paths = unique_sequences(safe_edge_paths, k, &extra_weight_of_paths, &edgelist, weight_of_neighbors_of_each_node, string_sequences, &edges);
+    let safe_paths = unique_sequences(safe_edge_paths, k, &extra_weight_of_paths, &edgelist, weight_of_neighbors_of_each_node, string_sequences, &edges, threshold);
 
 
     info!("Safe paths made to strings successfully.");

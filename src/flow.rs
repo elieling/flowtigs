@@ -1,5 +1,5 @@
-use crate::safe_paths::edge::Weight;
-use crate::safe_paths::graph::Edgelist;
+use crate::edge::Weight;
+use crate::graph::Edgelist;
 
 
 pub fn initialize_weight_of_neighbors_from(edgelist: &Edgelist) -> Vec<Weight> {

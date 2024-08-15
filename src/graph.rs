@@ -1,10 +1,10 @@
 use std::fs;
 use std::collections::HashMap;
-use crate::safe_paths::edge::Edge;
-use crate::safe_paths::edge::build_edge;
-use crate::safe_paths::edge::NodeId;
-use crate::safe_paths::edge::EdgeId;
-use crate::safe_paths::edge::Weight;
+use crate::edge::Edge;
+use crate::edge::build_edge;
+use crate::edge::NodeId;
+use crate::edge::EdgeId;
+use crate::edge::Weight;
 
 
 pub type Edgelist = Vec<HashMap<EdgeId, Edge>>;
@@ -12,12 +12,10 @@ pub type Edgelist = Vec<HashMap<EdgeId, Edge>>;
 
 // Reading the file
 fn read_file(path: &str) -> String {
-    let content = fs::read_to_string(path)
-        .expect("Should have been able to read the file");
-    content
+    // println!("Using file {}", path);
+    fs::read_to_string(path)
+        .expect("Should have been able to read the file")
 }
-
-
 
 
 // Creating data structure representing the graph and calculating indegree and outdegree of each node
